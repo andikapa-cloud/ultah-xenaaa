@@ -1,98 +1,159 @@
 import streamlit as st
 import os
 
-# --- 1. KONFIGURASI HALAMAN UTAMA ---
+# --- 1. SET KONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="Happy 20th Birthday, Xena! 🎂", 
-    page_icon="🎉", 
+    page_icon="👑", 
     layout="centered"
 )
 
-# --- 2. JUDUL UTAMA & BADGE SELEBRASI ---
-st.title("🎉 HAPPY BIRTHDAY XENA! 🎉")
-st.subheader("Welcome to 20s Club! ✨")
+# --- 2. CUSTOM CSS: THEMA LUXURY DARK MODE & GLASSMORPHISM ---
+st.markdown("""
+    <style>
+    /* Mengubah background utama menjadi dark mode elegan */
+    .stApp {
+        background: linear-gradient(135deg, #111116 0%, #1a1a24 100%);
+        color: #f0f0f5;
+    }
+    
+    /* Judul Utama dengan Efek Glow Emas/Pink */
+    .luxury-title { 
+        font-size: 42px !important; 
+        font-weight: 900; 
+        background: linear-gradient(45deg, #ff758c, #ff7eb3, #ffbe53);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center; 
+        margin-bottom: 5px;
+        letter-spacing: 2px;
+        text-shadow: 0px 0px 20px rgba(255, 117, 140, 0.2);
+    }
+    
+    /* Badge Usia */
+    .luxury-badge {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        color: #111116;
+        background: linear-gradient(45deg, #ffbe53, #ff758c);
+        padding: 6px 20px;
+        border-radius: 50px;
+        width: fit-content;
+        margin: 0 auto 25px auto;
+        box-shadow: 0px 4px 15px rgba(255, 117, 140, 0.4);
+    }
+    
+    /* Kartu Ucapan Efek Kaca Transparan (Glassmorphism) */
+    .luxury-card { 
+        background: rgba(255, 255, 255, 0.03); 
+        padding: 30px; 
+        border-radius: 20px; 
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.5);
+        margin-top: 25px;
+        margin-bottom: 25px;
+        line-height: 1.8;
+        font-size: 16px;
+        color: #e2e2ec;
+        text-align: justify;
+    }
+    
+    /* Bingkai Foto */
+    .photo-frame {
+        border-radius: 20px;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0px 10px 30px rgba(0,0,0,0.6);
+        margin-bottom: 20px;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-# --- FITUR MUSIK LATAR PREMIUM (NINA - .FEAST) ---
-st.markdown("---")
-st.markdown("#### 🎵 Musik Pengiring untuk Xena")
+# --- 3. TAMPILAN HEADER ---
+st.markdown('<p class="luxury-title">✨ HAPPY BIRTHDAY, XENA ✨</p>', unsafe_allow_html=True)
+st.markdown('<div class="luxury-badge">Welcome to 20s Club! 👑</div>', unsafe_allow_html=True)
 
-# Opsi Utama: Membaca file lokal nina.mp3
+# Efek Balon Otomatis saat Halaman Dimuat Pertama Kali
+if 'init_celebrate' not in st.session_state:
+    st.balloons()
+    st.session_state.init_celebrate = True
+
+# --- 4. PLAYER MUSIK LATAR (.FEAST - NINA) ---
 if os.path.exists("nina.mp3"):
     try:
         with open("nina.mp3", "rb") as audio_file:
             audio_bytes = audio_file.read()
         st.audio(audio_bytes, format="audio/mp3", autoplay=True)
-        st.caption("🔊 *Sedang memutar langsung dari file lokal: .Feast - Nina*")
-    except Exception as e:
-        # Jika file lokal error/rusak, otomatis alihkan ke link streaming cadangan yang stabil
-        audio_url_backup = "https://soundhelix.com"
-        st.audio(audio_url_backup, format="audio/mp3", autoplay=True)
-        st.caption("🎵 *Musik cadangan diputar otomatis karena file lokal sedang loading...*")
+        st.caption("🎵 *Mengalun: .Feast - Nina*")
+    except:
+        st.audio("https://soundhelix.com", format="audio/mp3", autoplay=True)
 else:
-    # Jika file nina.mp3 belum terbaca sama sekali
-    audio_url_backup = "https://soundhelix.com"
-    st.audio(audio_url_backup, format="audio/mp3", autoplay=True)
-    st.caption("💡 *Tips: Pastikan nama file musik sudah tepat 'nina.mp3' di folder VS Code Anda.*")
+    st.audio("https://soundhelix.com", format="audio/mp3", autoplay=True)
 
+st.markdown("<br>", unsafe_allow_html=True)
 
-# --- 4. TAMPILAN FOTO UTAMA XENA ---
+# --- 5. TAMPILAN FOTO UTAMA DENGAN FRAME ELEGAN ---
 if os.path.exists("sahabat.jpg"):
-    st.image("sahabat.jpg", caption="Happy 20th Birthday Xena Ida Karunia! 🤩", use_container_width=True)
+    st.markdown('<div class="photo-frame">', unsafe_allow_html=True)
+    st.image("sahabat.jpg", use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.caption("<p style='text-align: center; color: #aaa;'>Xena Ida Karunia • 20 Years of Awesomeness ✨</p>", unsafe_allow_html=True)
 else:
-    st.info("📸 [Info Foto]: Masukkan foto Xena ke folder proyek Anda dan beri nama 'sahabat.jpg'.")
-
-# --- 5. VISUAL LILIN INTERAKTIF (STATE MANAGEMENT) ---
-st.markdown("### 🎂 Lilin Ulang Tahun Virtual")
-
-# Inisialisasi status lilin (Default: Menyala)
-if 'lilin_menyala' not in st.session_state:
-    st.session_state.lilin_menyala = True
-
-# Tampilan visual lilin berdasarkan status menggunakan emoji (Sangat stabil & ringan)
-if st.session_state.lilin_menyala:
-    st.markdown("<h1 style='text-align: center; font-size: 80px; margin: 0;'>🔥<br>🕯️</h1>", unsafe_allow_html=True)
-    st.caption("<p style='text-align: center;'>Status: Lilin sedang menyala. Buat harapan dan tiup di bawah! 👇</p>", unsafe_allow_html=True)
-else:
-    st.markdown("<h1 style='text-align: center; font-size: 80px; margin: 0;'>💨<br>🕯️</h1>", unsafe_allow_html=True)
-    st.success("🎉 Huffff... Lilin berhasil ditiup! Semoga semua harapanmu terkabul, Xena! ✨")
+    st.info("📸 Masukkan foto 'sahabat.jpg' ke dalam folder proyek Anda.")
 
 st.markdown("---")
 
-# --- 6. KOTAK UCAPAN KHUSUS UNTUK XENA ---
-st.markdown("### 💌 Pesan Spesial Buat Kamu:")
+# --- 6. VISUAL LILIN INTERAKTIF YANG LEBIH HIDUP ---
+st.markdown("<h4 style='text-align: center; color: #ffbe53;'>🎂 Tiup Lilin Ulang Tahun Virtualmu Di Sini</h4>", unsafe_allow_html=True)
 
-pesan_xena = """
-WOIIIII THIS UR DAY😱🤩
-hehehehehehe agaaa maleman yaawww😁🙏🏻
-happy 20th birthday xenaaaa, kepala 2 btw woilahh, bener bener di fase dewasa yang sesungguhnya😱
-🥳🥳🥳😼😱😱🤩🤩
+if 'lilin_aktif' not in st.session_state:
+    st.session_state.lilin_aktif = True
 
-selamat ulang tahun ke 20 xena ida karunia, suatu keberuntungan sendiri bisa kenal u selama ±7tahun ini, dan yapp sekarang udah 20 taonn padahal kek baru kemaren. 
-😅😼🤩🤩🥳😎😜
+if st.session_state.lilin_aktif:
+    # Lilin menyala dengan animasi glow teks sederhana
+    st.markdown("<h1 style='text-align: center; font-size: 90px; margin: 0; text-shadow: 0 0 20px #ffbe53;'>🔥<br><span style='color: #eee;'>🕯️</span></h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 14px; color: #ffbe53; font-style: italic;'>Make a wish, isi harapanmu di bawah, lalu klik tombol tiup! 👇</p>", unsafe_allow_html=True)
+else:
+    # Lilin padam berganti asap tiupan
+    st.markdown("<h1 style='text-align: center; font-size: 90px; margin: 0; opacity: 0.6;'>💨<br><span style='color: #888;'>🕯️</span></h1>", unsafe_allow_html=True)
+    st.success("🎉 Huffff... Lilin berhasil ditiup! Semoga seluruh mimpimu lekas dikabulkan oleh semesta, Xena! 🌟")
 
-di umur 20 ini semoga xena selalu di berikan kekuatan, kesehatan, kemudahan, kelancaran dalam hal apapun itu, keberhasilan buat dapetin apa yang xena impikan, selalu di jauhkan dari segala hal negatif yang ada di luar sana, menjadi pribadi yang lebih baik untuk kedepannya, semoga selalu di kelilingi sama orang orang baik,  selalu jadi kakak yang baik buat zaki sama novi yaww, nurut sama ayah sama mama jugaa. 
+st.markdown("---")
 
-i proud of u, dengan segala upaya yang xena lakukan di hari hari kemarin akhirnya bener bener berbuahkan hasil, soon (dr). Xena Ida Karunia😼, semoga selalu di permudahkan urusan perkuliahan nya yaaaa, bisa lancar semua tugas yang xena emban selama kuliah nanti, dannnnnnnn semogaa xena lulus tepat waktu dengan hasil yang memuaskannn, aamiin.jangan lupa buat tetep jadi orang baik di tengah orang orang yang semrawut inii😭
+# --- 7. KOTAK UCAPAN DENGAN DESAIN TEXT LUXURY ---
+st.markdown("<h4 style='color: #ff758c;'>💌 Surat Terbuka Untuk Xena:</h4>", unsafe_allow_html=True)
 
-jaga diri baik baik euyy selama di kampus buat kedepannya, tidak telat makan, tidak kurang tidur(ga yakin sih tapi nek iki), tidak kurang minum karna sby sangat amat allahuakbar panasnya, dan jangan lupa istirahat.tubuhmu juga perlu istirahat ditengah padat e jadwal kuliah kmu, jadii plisss jangan terlalu di paksain kalo bener bener udah lowbat.
-
-wes ga tau neh meh ngomong opo, selamat bergabung di circle 20th dimana kejadian dewasa yang sebenarnya baru saja di mulai, terimakasih udah bertahan sejauh ini buat diri kamu, orang terdekatmu dan masa depanmu.semoga dunia selalu berbuat baik buat xena kapanpun dan dimanapun xena ada. 
-
-once again, happy 20th  birthday xena ida karunia 🤩🤩🥳😼 u are an amazing person.
+pesan_premium = """
+<div class="luxury-card">
+    <b>WOIIIII THIS UR DAY😱🤩</b><br>
+    hehehehehehe agaaa maleman yaawww😁🙏🏻<br>
+    happy 20th birthday xenaaaa, kepala 2 btw woilahh, bener bener di fase dewasa yang sesungguhnya😱 🥳🥳🥳😼😱😱🤩🤩<br><br>
+    
+    selamat ulang tahun ke 20 xena ida karunia, suatu keberuntungan sendiri bisa kenal u selama ±7tahun ini, dan yapp sekarang udah 20 taonn padahal kek baru kemaren. 😅😼🤩🤩🥳😎😜<br><br>
+    
+    di umur 20 ini semoga xena selalu di berikan kekuatan, kesehatan, kemudahan, kelancaran dalam hal apapun itu, keberhasilan buat dapetin apa yang xena impikan, selalu di jauhkan dari segala hal negatif yang ada di luar sana, menjadi pribadi yang lebih baik untuk kedepannya, semoga selalu di kelilingi sama orang orang baik, selalu jadi kakak yang baik buat zaki sama novi yaww, nurut sama ayah sama mama jugaa.<br><br>
+    
+    i proud of u, dengan segala upaya yang xena lakukan di hari hari kemarin akhirnya bener bener berbuahkan hasil, soon (dr). Xena Ida Karunia😼, semoga selalu di permudahkan urusan perkuliahan nya yaaaa, bisa lancar semua tugas yang xena emban selama kuliah nanti, dannnnnnnn semogaa xena lulus tepat waktu dengan hasil yang memuaskannn, aamiin. jangan lupa buat tetep jadi orang baik di tengah orang orang yang semrawut inii😭<br><br>
+    
+    jaga diri baik baik euyy selama di kampus buat kedepannya, tidak telat makan, tidak kurang tidur(ga yakin sih tapi nek iki), tidak kurang minum karna sby sangat amat allahuakbar panasnya, dan jangan lupa istirahat. tubuhmu juga perlu istirahat ditengah padat e jadwal kuliah kmu, jadii plisss jangan terlalu di paksain kalo bener bener udah lowbat.<br><br>
+    
+    wes ga tau neh meh ngomong opo, selamat bergabung di circle 20th dimana kejadian dewasa yang sebenarnya baru saja di mulai, terimakasih udah bertahan sejauh ini buat diri kamu, orang terdekatmu dan masa depanmu. semoga dunia selalu berbuat baik buat xena kapanpun dan dimanapun xena ada.<br><br>
+    
+    <span style="font-weight: bold; color: #ff758c; font-size: 17px;">once again, happy 20th birthday xena ida karunia 🤩🤩🥳😼 u are an amazing person.</span>
+</div>
 """
+st.markdown(pesan_premium, unsafe_allow_html=True)
 
-st.info(pesan_xena)
+# --- 8. BAGIAN INTERAKTIF: WISH INPUT & BLOW BUTTON ---
+wish_input = st.text_input("✨ Apa pencapaian terbesar yang ingin kamu raih tahun ini, Xen?", placeholder="Tulis satu impian terbesarmu di sini...")
 
-# --- 7. FITUR INTERAKTIF: MAKE A WISH & TIUP LILIN ---
-st.write("")
-st.subheader("🔮 Make A Wish & Tiup Lilin")
-wish_input = st.text_input("Apa pencapaian terbesar yang ingin kamu raih tahun ini?", placeholder="Tulis harapanmu di sini...")
-
-if st.button("Tiup Lilin Virtual 🎂🚀"):
+if st.button("Tiup Lilin & Kunci Harapan 🎂"):
     if wish_input:
-        st.session_state.lilin_menyala = False  # Mengubah status lilin menjadi mati
-        st.balloons()  # Efek selebrasi balon udara
-        st.success(f"Harapanmu: \"{wish_input}\" telah dikunci oleh semesta! ✨")
-        st.rerun()  # Memperbarui halaman agar visual lilin langsung berubah mati
+        st.session_state.lilin_aktif = False
+        st.balloons()
+        st.toast("Harapanmu sudah terbang ke langit! 🪐")
+        st.success(f"🔒 Selamat! Harapanmu: \"{wish_input}\" telah dikunci rapat. Semoga lekas terwujud nyata tahun ini! ✨")
+        st.rerun()
     else:
-        st.warning("Tulis dulu harapanmu sebelum meniup lilinnya ya!")
+        st.warning("Tulis dulu harapanmu sebelum meniup lilin virtualnya, Xena!")
