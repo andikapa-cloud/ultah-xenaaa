@@ -173,7 +173,7 @@ wes ga tau neh meh ngomong opo, selamat bergabung di circle 20th dimana kejadian
     st.markdown('<p class="pesta-banner">🎈🎁✨🎈🎁✨🎈🎁✨🎈</p>', unsafe_allow_html=True)
     wish_input = st.text_input("✨ Apa pencapaian terbesar yang ingin kamu raih tahun ini, Xen?", placeholder="Tulis satu impian terbesarmu di sini...")
 
-    # Eksekusi tombol dengan perintah pemicu scroll ke atas secara instan
+    # Eksekusi tombol yang sudah diperbaiki total (Anti-Macet)
     if st.button("Tiup Lilin & Kunci Harapan 🎂"):
         if wish_input:
             st.session_state.lilin_aktif = False
@@ -181,9 +181,9 @@ wes ga tau neh meh ngomong opo, selamat bergabung di circle 20th dimana kejadian
             st.toast("Harapanmu sudah terbang ke langit! 🪐")
             st.success(f"🔒 Selamat! Harapanmu: \"{wish_input}\" telah dikunci rapat. Semoga lekas terwujud nyata tahun ini! ✨")
             
-            # Memaksa halaman langsung lompat ke atas menuju ID #area-lilin
-            st.markdown('<script>window.location.href = "#area-lilin";</script>', unsafe_allow_html=True)
-            st.bottom = False
+            # Trik JavaScript instan untuk langsung memaksa layar lompat ke atas tanpa jeda
+            st.markdown('<script>window.location.hash = "area-lilin";</script>', unsafe_allow_html=True)
             st.rerun()
         else:
             st.warning("Tulis dulu harapanmu sebelum meniup lilin virtualnya, Xena!")
+
