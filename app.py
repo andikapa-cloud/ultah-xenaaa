@@ -11,13 +11,10 @@ st.set_page_config(
 # --- CUSTOM CSS THEME: LUXURY & ULTRA CELEBRATION ---
 st.markdown("""
     <style>
-    /* Mengubah latar belakang menjadi mode pesta malam */
     .stApp { 
         background: linear-gradient(135deg, #16111e 0%, #111116 100%); 
         color: #f0f0f5; 
     }
-    
-    /* Efek teks judul utama berkedip mewah */
     .luxury-title { 
         font-size: 45px !important; 
         font-weight: 900; 
@@ -26,17 +23,13 @@ st.markdown("""
         -webkit-text-fill-color: transparent; 
         text-align: center; 
         margin-bottom: 5px;
-        animation: glow 2s ease-in-out infinite alternate;
     }
-    
-    /* Dekorasi gantung tirai pesta di atas */
     .pesta-banner {
         text-align: center;
         font-size: 24px;
         letter-spacing: 5px;
         margin-bottom: 10px;
     }
-    
     .luxury-badge { 
         text-align: center; 
         font-size: 18px; 
@@ -48,8 +41,6 @@ st.markdown("""
         width: fit-content; 
         margin: 0 auto 25px auto; 
     }
-    
-    /* Bingkai foto dekoratif dengan bayangan cahaya neon */
     .photo-frame { 
         border-radius: 20px; 
         overflow: hidden; 
@@ -60,7 +51,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Inisialisasi status kado (Default: Belum dibuka)
+# Inisialisasi status kado
 if 'kado_terbuka' not in st.session_state:
     st.session_state.kado_terbuka = False
 
@@ -72,34 +63,30 @@ if not st.session_state.kado_terbuka:
     st.markdown("<p style='text-align: center; color: #aaa;'>Klik tombol di bawah ini untuk membuka keseruannya!</p>", unsafe_allow_html=True)
     
     st.write("")
-    col1, col2, col3 = st.columns()
+    col1, col2, col3 = st.columns(3) # <-- SUDAH DIPERBAIKI DI SINI
     with col2:
-        if st.button("🎉 BUKA KADO DIGITAL UTAMA 🎉", use_container_width=True):
+        if st.button("🎉 BUKA KADO DIGITAL 🎉", use_container_width=True):
             st.session_state.kado_terbuka = True
             st.rerun()
 
 # --- HALAMAN UTAMA SETELAH KADO DIBUKA ---
 else:
-    # --- VISUAL TAMBAHAN 1: ANIMASI HUJAN KONFETI TERUS-MENERUS ---
-    st.snow() # Mengaktifkan efek elemen rontok konfeti dari atas layar agar ramai
-    
-    # --- VISUAL TAMBAHAN 2: BANNER DEKORASI PESTA ATAS ---
+    st.snow() # Efek konfeti rontok terus-menerus
     st.markdown('<p class="pesta-banner">🎈🎁✨🎈🎁✨🎈🎁✨🎈</p>', unsafe_allow_html=True)
     st.markdown('<p class="luxury-title">✨ HAPPY BIRTHDAY, XENA ✨</p>', unsafe_allow_html=True)
     st.markdown('<div class="luxury-badge">Welcome to 20s Club! 👑</div>', unsafe_allow_html=True)
 
-    # Efek Balon Meluncur Sekali di Awal
     if 'init_celebrate' not in st.session_state:
         st.balloons()
         st.session_state.init_celebrate = True
 
-    # MEMUTAR MUSIK SECARA SEGERA
+    # MUSIK LATAR (.FEAST - NINA)
     if os.path.exists("nina.mp3"):
         try:
             with open("nina.mp3", "rb") as audio_file:
                 audio_bytes = audio_file.read()
             st.audio(audio_bytes, format="audio/mp3", autoplay=True)
-            st.caption("🎵 *Mengalun: .Feast - Nina (Browser Diizinkan Memutar) 🔊*")
+            st.caption("🎵 *Mengalun: .Feast - Nina 🔊*")
         except:
             st.audio("https://soundhelix.com", format="audio/mp3", autoplay=True)
     else:
@@ -130,7 +117,7 @@ else:
 
     st.markdown("---")
 
-    # --- VISUAL TAMBAHAN 3: KOTAK SURAT DENGAN DEKORASI EMOJI MERIAH ---
+    # KOTAK SURAT DENGAN DEKORASI EMOJI MERIAH
     st.markdown("### 💌 Surat Terbuka Untuk Xena:")
     
     pesan_xena_fix = """
@@ -151,7 +138,7 @@ i proud of u, dengan segala upaya yang xena lakukan di hari hari kemarin akhirny
 jaga diri baik baik euyy selama di kampus buat kedepannya, tidak telat makan, tidak kurang tidur (ga yakin sih tapi nek iki), tidak kurang minum karna sby sangat amat allahuakbar panasnya, dan jangan lupa istirahat. tubuhmu juga perlu istirahat ditengah padat e jadwal kuliah kmu, jadii plisss jangan terlalu di paksain kalo bener bener udah lowbat.  
 
 🚀 **Selamat Datang di Fase Baru!**  
-wes ga tau neh meh ngomong opo, selamat bergabung di circle 20th dimana kejadian dewasa yang sebenarnya baru saja di mulai, terimakasih udah bertahan sejauh ini buat diri kamu, orang terdekatmu dan masa depanmu. semoga dunia selalu berbuat baik buat xena kapanpun dan dimanapun xena ada.  
+wes ga tau neh meh ngomong opo, selamat bergabung di circle 20th dimana kejadian dewasa yang sebenarnya baru saja di mulai, terimakasih udah bertahan sejauh ini buat diri kamu, orang terdekatmu and masa depanmu. semoga dunia selalu berbuat baik buat xena kapanpun dan dimanapun xena ada.  
 
 ✨ **once again, happy 20th birthday xena ida karunia 🤩🤩🥳😼 u are an amazing person.**
 """
