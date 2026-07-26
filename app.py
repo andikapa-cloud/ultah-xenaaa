@@ -8,12 +8,9 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- CUSTOM CSS THEME: LUXURY, ANIMASI API, & SMOOTH SCROLL ---
+# --- CUSTOM CSS THEME: LUXURY & ULTRA CELEBRATION ---
 st.markdown("""
     <style>
-    html {
-        scroll-behavior: smooth;
-    }
     .stApp { 
         background: linear-gradient(135deg, #16111e 0%, #111116 100%); 
         color: #f0f0f5; 
@@ -51,8 +48,6 @@ st.markdown("""
         box-shadow: 0px 0px 25px rgba(255, 117, 140, 0.6); 
         margin-bottom: 20px; 
     }
-    
-    /* ANIMASI API LILIN BERGERAK (FLICKER EFFECT) */
     @keyframes goyangApi {
         0% { transform: scale(1) rotate(-1deg); opacity: 0.9; }
         50% { transform: scale(1.1) rotate(2deg); opacity: 1; text-shadow: 0 0 40px #ff8533; }
@@ -70,14 +65,15 @@ st.markdown("""
         font-size: 90px;
         text-align: center;
         margin: 0;
-        opacity: 0.3;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Inisialisasi status kado
+# Inisialisasi status aplikasi
 if 'kado_terbuka' not in st.session_state:
     st.session_state.kado_terbuka = False
+if 'lilin_aktif' not in st.session_state:
+    st.session_state.lilin_aktif = True
 
 # --- HALAMAN DEPAN: TOMBOL KEJUTAN ---
 if not st.session_state.kado_terbuka:
@@ -110,7 +106,6 @@ else:
             with open("nina.mp3", "rb") as audio_file:
                 audio_bytes = audio_file.read()
             st.audio(audio_bytes, format="audio/mp3", autoplay=True)
-            st.caption("🎵 *Mengalun: .Feast - Nina 🔊*")
         except:
             st.audio("https://soundhelix.com", format="audio/mp3", autoplay=True)
     else:
@@ -127,38 +122,17 @@ else:
 
     st.markdown("---")
 
-    # --- TITIK JANGKAR UNTUK AUTO-SCROLL (AREA LILIN) ---
-    st.markdown('<div id="area-lilin"></div>', unsafe_allow_html=True)
-
-    # VISUAL LILIN INTERAKTIF MURNI CSS (PASTI MUNCUL)
-    st.markdown("<h4 style='text-align: center; color: #ffbe53;'>🎂 Lilin Ulang Tahun Virtual</h4>", unsafe_allow_html=True)
-    
-    if 'lilin_aktif' not in st.session_state:
-        st.session_state.lilin_aktif = True
-
-    if st.session_state.lilin_aktif:
-        # Api bergoyang menggunakan animasi CSS murni
-        st.markdown('<div class="api-menyala">🔥<br><span style="color: #eee; font-size:70px;">🕯️</span></div>', unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; font-size: 14px; color: #ffbe53; font-style: italic;'>Make a wish, isi harapanmu di bawah, lalu tiup lilinnya! 👇</p>", unsafe_allow_html=True)
-    else:
-        # Api berubah menjadi asap tiupan yang bergerak redup
-        st.markdown('<div class="api-padam">💨<br><span style="color: #666; font-size:70px;">🕯️</span></div>', unsafe_allow_html=True)
-        st.success("🎉 Huffff... Lilin berhasil ditiup! Semoga seluruh mimpimu lekas dikabulkan oleh semesta, Xena! 🌟")
-
-    st.markdown("---")
-
-    # KOTAK SURAT
+    # KOTAK SURAT UTAMA
     st.markdown("### 💌 Surat Terbuka Untuk Xena:")
-    
     pesan_xena_fix = """
 🥳 **WOIIIII THIS UR DAY 😱🤩**  
 hehehehehehe agaaa maleman yaawww 😁🙏  
 happy 20th birthday xenaaaa, kepala 2 btw woilahh, bener bener di fase dewasa yang sesungguhnya 😱 🥳🥳🥳😼😱😱🤩🤩  
  
 selamat ulang tahun ke 20 xena ida karunia, suatu keberuntungan sendiri bisa kenal u selama ±7tahun ini, dan yapp sekarang udah 20 taonn padahal kek baru kemaren. 😅😼🤩🤩🥳😎😜  
-  
+
 di umur 20 ini semoga xena selalu di berikan kekuatan, kesehatan, kemudahan, kelancaran dalam hal apapun itu, keberhasilan buat dapetin apa yang xena impikan, selalu di jauhkan dari segala hal negatif yang ada di luar sana, menjadi pribadi yang lebih baik untuk kedepannya, semoga selalu di kelilingi sama orang orang baik, selalu jadi kakak yang baik buat zaki sama novi yaww, nurut sama ayah sama mama jugaa.  
- 
+  
 i proud of u, dengan segala upaya yang xena lakukan di hari hari kemarin akhirnya bener bener berbuahkan hasil, soon (dr). Xena Ida Karunia 😼, semoga selalu di permudahan urusan perkuliahan nya yaaaa, bisa lancar semua tugas yang xena emban selama kuliah nanti, dannnnnnnn semogaa xena lulus tepat waktu dengan hasil yang memuaskannn, aamiin. jangan lupa buat tetep jadi orang baik di tengah orang orang yang semrawut inii 😭  
  
 jaga diri baik baik euyy selama di kampus buat kedepannya, tidak telat makan, tidak kurang tidur (ga yakin sih tapi nek iki), tidak kurang minum karna sby sangat amat allahuakbar panasnya, dan jangan lupa istirahat. tubuhmu juga perlu istirahat ditengah padat e jadwal kuliah kmu, jadii plisss jangan terlalu di paksain kalo bener bener udah lowbat.  
@@ -168,22 +142,37 @@ wes ga tau neh meh ngomong opo, selamat bergabung di circle 20th dimana kejadian
 ✨ **once again, happy 20th birthday xena ida karunia 🤩🤩🥳😼 u are an amazing person.**
 """
     st.info(pesan_xena_fix)
+    st.markdown("---")
 
-    # BAGIAN INTERAKTIF: WISH INPUT & BLOW BUTTON
-    st.markdown('<p class="pesta-banner">🎈🎁✨🎈🎁✨🎈🎁✨🎈</p>', unsafe_allow_html=True)
-    wish_input = st.text_input("✨ Apa pencapaian terbesar yang ingin kamu raih tahun ini, Xen?", placeholder="Tulis satu impian terbesarmu di sini...")
+    # --- LOGIKA KONDISIONAL PERPINDAHAN TEMPAT LILIN ---
+    if st.session_state.lilin_aktif:
+        # TAMPILAN 1: JIKA LILIN MASIH MENYALA (Tampilkan area lilin dan kolom ketik harapan seperti biasa)
+        st.markdown("<h4 style='text-align: center; color: #ffbe53;'>🎂 Lilin Ulang Tahun Virtual</h4>", unsafe_allow_html=True)
+        st.markdown('<div class="api-menyala">🔥<br><span style="color: #eee; font-size:70px;">🕯️</span></div>', unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-size: 14px; color: #ffbe53; font-style: italic;'>Make a wish, isi harapanmu di bawah, lalu tiup lilinnya! 👇</p>", unsafe_allow_html=True)
+        
+        st.markdown('<p class="pesta-banner">🎈🎁✨🎈🎁✨🎈🎁✨🎈</p>', unsafe_allow_html=True)
+        wish_input = st.text_input("✨ Apa pencapaian terbesar yang ingin kamu raih tahun ini, Xen?", placeholder="Tulis satu impian terbesarmu di sini...")
 
-    # Eksekusi tombol yang sudah diperbaiki total (Anti-Macet)
-    if st.button("Tiup Lilin & Kunci Harapan 🎂"):
-        if wish_input:
-            st.session_state.lilin_aktif = False
-            st.balloons()
-            st.toast("Harapanmu sudah terbang ke langit! 🪐")
-            st.success(f"🔒 Selamat! Harapanmu: \"{wish_input}\" telah dikunci rapat. Semoga lekas terwujud nyata tahun ini! ✨")
-            
-            # Trik JavaScript instan untuk langsung memaksa layar lompat ke atas tanpa jeda
-            st.markdown('<script>window.location.hash = "area-lilin";</script>', unsafe_allow_html=True)
+        if st.button("Tiup Lilin & Kunci Harapan 🎂"):
+            if wish_input:
+                st.session_state.lilin_aktif = False
+                st.session_state.simpan_harapan = wish_input
+                st.balloons()
+                st.toast("Harapanmu sudah terbang ke langit! 🪐")
+                st.rerun()
+            else:
+                st.warning("Tulis dulu harapanmu sebelum meniup lilin virtualnya, Xena!")
+                
+    else:
+        # TAMPILAN 2: JIKA LILIN SUDAH DITIUP (Bagian ketik harapan HILANG, berganti visual Lilin Padam + Pesan Sukses tepat di area pandangan mata bawah!)
+        st.markdown("<h4 style='text-align: center; color: #888;'>💨 Lilin Berhasil Ditiup!</h4>", unsafe_allow_html=True)
+        st.markdown('<div class="api-padam">💨<br><span style="color: #666; font-size:70px;">🕯️</span></div>', unsafe_allow_html=True)
+        
+        # Pesan sukses diletakkan paling bawah agar Xena langsung bisa membacanya tanpa perlu repot scroll ke atas lagi
+        st.success(f"🔒 Selamat Xena! Harapanmu: \"{st.session_state.simpan_harapan}\" telah resmi dikunci rapat oleh semesta. Semoga lekas terwujud nyata di usiamu yang ke-20 tahun ini! 🌟🎈")
+        
+        # Tombol untuk menyalakan lilin kembali (opsional, jika ingin mengulang keseruan)
+        if st.button("🔄 Nyalakan Lilin Lagi"):
+            st.session_state.lilin_aktif = True
             st.rerun()
-        else:
-            st.warning("Tulis dulu harapanmu sebelum meniup lilin virtualnya, Xena!")
-
