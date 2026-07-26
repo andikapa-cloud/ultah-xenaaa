@@ -8,10 +8,9 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- CUSTOM CSS THEME: LUXURY, ANIMASI, & SMOOTH SCROLL ---
+# --- CUSTOM CSS THEME: LUXURY, ANIMASI API, & SMOOTH SCROLL ---
 st.markdown("""
     <style>
-    /* Mengaktifkan efek scroll yang halus saat halaman otomatis naik ke atas */
     html {
         scroll-behavior: smooth;
     }
@@ -52,11 +51,26 @@ st.markdown("""
         box-shadow: 0px 0px 25px rgba(255, 117, 140, 0.6); 
         margin-bottom: 20px; 
     }
-    /* Gaya Wadah Lilin Animasi */
-    .candle-container {
+    
+    /* ANIMASI API LILIN BERGERAK (FLICKER EFFECT) */
+    @keyframes goyangApi {
+        0% { transform: scale(1) rotate(-1deg); opacity: 0.9; }
+        50% { transform: scale(1.1) rotate(2deg); opacity: 1; text-shadow: 0 0 40px #ff8533; }
+        100% { transform: scale(0.95) rotate(-2deg); opacity: 0.85; }
+    }
+    .api-menyala {
+        font-size: 90px;
         text-align: center;
-        margin: 20px auto;
-        width: 150px;
+        margin: 0;
+        display: inline-block;
+        width: 100%;
+        animation: goyangApi 0.4s ease-in-out infinite alternate;
+    }
+    .api-padam {
+        font-size: 90px;
+        text-align: center;
+        margin: 0;
+        opacity: 0.3;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -116,27 +130,19 @@ else:
     # --- TITIK JANGKAR UNTUK AUTO-SCROLL (AREA LILIN) ---
     st.markdown('<div id="area-lilin"></div>', unsafe_allow_html=True)
 
-    # VISUAL LILIN INTERAKTIF BERGERAK (GIF ANIMASI)
+    # VISUAL LILIN INTERAKTIF MURNI CSS (PASTI MUNCUL)
     st.markdown("<h4 style='text-align: center; color: #ffbe53;'>🎂 Lilin Ulang Tahun Virtual</h4>", unsafe_allow_html=True)
     
     if 'lilin_aktif' not in st.session_state:
         st.session_state.lilin_aktif = True
 
     if st.session_state.lilin_aktif:
-        # Menampilkan Gambar Animasi Api Lilin Bergerak (GIF)
-        st.markdown("""
-            <div class="candle-container">
-                <img src="https://giphy.com" width="120">
-            </div>
-        """, unsafe_allow_html=True)
+        # Api bergoyang menggunakan animasi CSS murni
+        st.markdown('<div class="api-menyala">🔥<br><span style="color: #eee; font-size:70px;">🕯️</span></div>', unsafe_allow_html=True)
         st.markdown("<p style='text-align: center; font-size: 14px; color: #ffbe53; font-style: italic;'>Make a wish, isi harapanmu di bawah, lalu tiup lilinnya! 👇</p>", unsafe_allow_html=True)
     else:
-        # Menampilkan Gambar Animasi Api Padam Menjadi Asap Bergerak (GIF)
-        st.markdown("""
-            <div class="candle-container">
-                <img src="https://giphy.com" width="120">
-            </div>
-        """, unsafe_allow_html=True)
+        # Api berubah menjadi asap tiupan yang bergerak redup
+        st.markdown('<div class="api-padam">💨<br><span style="color: #666; font-size:70px;">🕯️</span></div>', unsafe_allow_html=True)
         st.success("🎉 Huffff... Lilin berhasil ditiup! Semoga seluruh mimpimu lekas dikabulkan oleh semesta, Xena! 🌟")
 
     st.markdown("---")
@@ -148,13 +154,13 @@ else:
 🥳 **WOIIIII THIS UR DAY 😱🤩**  
 hehehehehehe agaaa maleman yaawww 😁🙏  
 happy 20th birthday xenaaaa, kepala 2 btw woilahh, bener bener di fase dewasa yang sesungguhnya 😱 🥳🥳🥳😼😱😱🤩🤩  
-  
+ 
 selamat ulang tahun ke 20 xena ida karunia, suatu keberuntungan sendiri bisa kenal u selama ±7tahun ini, dan yapp sekarang udah 20 taonn padahal kek baru kemaren. 😅😼🤩🤩🥳😎😜  
   
 di umur 20 ini semoga xena selalu di berikan kekuatan, kesehatan, kemudahan, kelancaran dalam hal apapun itu, keberhasilan buat dapetin apa yang xena impikan, selalu di jauhkan dari segala hal negatif yang ada di luar sana, menjadi pribadi yang lebih baik untuk kedepannya, semoga selalu di kelilingi sama orang orang baik, selalu jadi kakak yang baik buat zaki sama novi yaww, nurut sama ayah sama mama jugaa.  
  
 i proud of u, dengan segala upaya yang xena lakukan di hari hari kemarin akhirnya bener bener berbuahkan hasil, soon (dr). Xena Ida Karunia 😼, semoga selalu di permudahan urusan perkuliahan nya yaaaa, bisa lancar semua tugas yang xena emban selama kuliah nanti, dannnnnnnn semogaa xena lulus tepat waktu dengan hasil yang memuaskannn, aamiin. jangan lupa buat tetep jadi orang baik di tengah orang orang yang semrawut inii 😭  
-  
+ 
 jaga diri baik baik euyy selama di kampus buat kedepannya, tidak telat makan, tidak kurang tidur (ga yakin sih tapi nek iki), tidak kurang minum karna sby sangat amat allahuakbar panasnya, dan jangan lupa istirahat. tubuhmu juga perlu istirahat ditengah padat e jadwal kuliah kmu, jadii plisss jangan terlalu di paksain kalo bener bener udah lowbat.  
   
 wes ga tau neh meh ngomong opo, selamat bergabung di circle 20th dimana kejadian dewasa yang sebenarnya baru saja di mulai, terimakasih udah bertahan sejauh ini buat diri kamu, orang terdekatmu and masa depanmu. semoga dunia selalu berbuat baik buat xena kapanpun dan dimanapun xena ada.  
@@ -167,7 +173,7 @@ wes ga tau neh meh ngomong opo, selamat bergabung di circle 20th dimana kejadian
     st.markdown('<p class="pesta-banner">🎈🎁✨🎈🎁✨🎈🎁✨🎈</p>', unsafe_allow_html=True)
     wish_input = st.text_input("✨ Apa pencapaian terbesar yang ingin kamu raih tahun ini, Xen?", placeholder="Tulis satu impian terbesarmu di sini...")
 
-    # Tombol menggunakan trik JavaScript bawaan HTML untuk otomatis loncat ke atas (#area-lilin) saat diklik
+    # Eksekusi tombol dengan perintah pemicu scroll ke atas secara instan
     if st.button("Tiup Lilin & Kunci Harapan 🎂"):
         if wish_input:
             st.session_state.lilin_aktif = False
@@ -175,8 +181,9 @@ wes ga tau neh meh ngomong opo, selamat bergabung di circle 20th dimana kejadian
             st.toast("Harapanmu sudah terbang ke langit! 🪐")
             st.success(f"🔒 Selamat! Harapanmu: \"{wish_input}\" telah dikunci rapat. Semoga lekas terwujud nyata tahun ini! ✨")
             
-            # Trik JavaScript untuk menarik layar otomatis naik ke area lilin
+            # Memaksa halaman langsung lompat ke atas menuju ID #area-lilin
             st.markdown('<script>window.location.href = "#area-lilin";</script>', unsafe_allow_html=True)
+            st.bottom = False
             st.rerun()
         else:
             st.warning("Tulis dulu harapanmu sebelum meniup lilin virtualnya, Xena!")
