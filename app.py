@@ -1,131 +1,92 @@
 import streamlit as st
 import os
 
-# --- 1. SET KONFIGURASI HALAMAN ---
+# Konfigurasi halaman web premium
 st.set_page_config(
     page_title="Happy 20th Birthday, Xena! 🎂", 
     page_icon="👑", 
     layout="centered"
 )
 
-# --- 2. CUSTOM CSS: THEMA LUXURY DARK MODE & GLASSMORPHISM ---
+# --- CUSTOM CSS THEME ---
 st.markdown("""
     <style>
-    /* Mengubah background utama menjadi dark mode elegan */
-    .stApp {
-        background: linear-gradient(135deg, #111116 0%, #1a1a24 100%);
-        color: #f0f0f5;
-    }
-    
-    /* Judul Utama dengan Efek Glow Emas/Pink */
-    .luxury-title { 
-        font-size: 42px !important; 
-        font-weight: 900; 
-        background: linear-gradient(45deg, #ff758c, #ff7eb3, #ffbe53);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-align: center; 
-        margin-bottom: 5px;
-        letter-spacing: 2px;
-        text-shadow: 0px 0px 20px rgba(255, 117, 140, 0.2);
-    }
-    
-    /* Badge Usia */
-    .luxury-badge {
-        text-align: center;
-        font-size: 18px;
-        font-weight: 700;
-        color: #111116;
-        background: linear-gradient(45deg, #ffbe53, #ff758c);
-        padding: 6px 20px;
-        border-radius: 50px;
-        width: fit-content;
-        margin: 0 auto 25px auto;
-        box-shadow: 0px 4px 15px rgba(255, 117, 140, 0.4);
-    }
-    
-    /* Kartu Ucapan Efek Kaca Transparan (Glassmorphism) */
-    .luxury-card { 
-        background: rgba(255, 255, 255, 0.03); 
-        padding: 30px; 
-        border-radius: 20px; 
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.5);
-        margin-top: 25px;
-        margin-bottom: 25px;
-        line-height: 1.8;
-        font-size: 16px;
-        color: #e2e2ec;
-        text-align: justify;
-    }
-    
-    /* Bingkai Foto */
-    .photo-frame {
-        border-radius: 20px;
-        overflow: hidden;
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0px 10px 30px rgba(0,0,0,0.6);
-        margin-bottom: 20px;
-    }
+    .stApp { background: linear-gradient(135deg, #111116 0%, #1a1a24 100%); color: #f0f0f5; }
+    .luxury-title { font-size: 42px !important; font-weight: 900; background: linear-gradient(45deg, #ff758c, #ff7eb3, #ffbe53); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 5px; }
+    .luxury-badge { text-align: center; font-size: 18px; font-weight: 700; color: #111116; background: linear-gradient(45deg, #ffbe53, #ff758c); padding: 6px 20px; border-radius: 50px; width: fit-content; margin: 0 auto 25px auto; }
+    .photo-frame { border-radius: 20px; overflow: hidden; border: 2px solid rgba(255, 255, 255, 0.1); box-shadow: 0px 10px 30px rgba(0,0,0,0.6); margin-bottom: 20px; }
     </style>
 """, unsafe_allow_html=True)
 
-# --- 3. TAMPILAN HEADER ---
-st.markdown('<p class="luxury-title">✨ HAPPY BIRTHDAY, XENA ✨</p>', unsafe_allow_html=True)
-st.markdown('<div class="luxury-badge">Welcome to 20s Club! 👑</div>', unsafe_allow_html=True)
+# Inisialisasi status kado (Default: Belum dibuka)
+if 'kado_terbuka' not in st.session_state:
+    st.session_state.kado_terbuka = False
 
-# Efek Balon Otomatis saat Halaman Dimuat Pertama Kali
-if 'init_celebrate' not in st.session_state:
-    st.balloons()
-    st.session_state.init_celebrate = True
+# --- HALAMAN DEPAN: TOMBOL KEJUTAN UNTUK MEMANCING AUTOPLAY BROWSER ---
+if not st.session_state.kado_terbuka:
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; color: #ff758c;'>Haii Xena! Ada kado digital khusus buat kamu... 🎁</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #aaa;'>Klik tombol di bawah ini untuk membuka kejutannya!</p>", unsafe_allow_html=True)
+    
+    st.write("")
+    # Tombol besar di tengah halaman
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("🎉 BUKA KADO DIGITAL UTAMA 🎉", use_container_width=True):
+            st.session_state.kado_terbuka = True
+            st.rerun()
 
-# --- 4. PLAYER MUSIK LATAR (.FEAST - NINA) ---
-if os.path.exists("nina.mp3"):
-    try:
-        with open("nina.mp3", "rb") as audio_file:
-            audio_bytes = audio_file.read()
-        st.audio(audio_bytes, format="audio/mp3", autoplay=True)
-        st.caption("🎵 *Mengalun: .Feast - Nina*")
-    except:
+# --- HALAMAN UTAMA SETELAH KADO DIBUKA ---
+else:
+    st.markdown('<p class="luxury-title">✨ HAPPY BIRTHDAY, XENA ✨</p>', unsafe_allow_html=True)
+    st.markdown('<div class="luxury-badge">Welcome to 20s Club! 👑</div>', unsafe_allow_html=True)
+
+    # Efek Balon Otomatis
+    if 'init_celebrate' not in st.session_state:
+        st.balloons()
+        st.session_state.init_celebrate = True
+
+    # MEMUTAR MUSIK SECARA SEGERA (Browser mengizinkan karena tombol pembuka sudah diklik)
+    if os.path.exists("nina.mp3"):
+        try:
+            with open("nina.mp3", "rb") as audio_file:
+                audio_bytes = audio_file.read()
+            st.audio(audio_bytes, format="audio/mp3", autoplay=True)
+            st.caption("🎵 *Mengalun: .Feast - Nina (Browser Diizinkan Memutar)🔊*")
+        except:
+            st.audio("https://soundhelix.com", format="audio/mp3", autoplay=True)
+    else:
         st.audio("https://soundhelix.com", format="audio/mp3", autoplay=True)
-else:
-    st.audio("https://soundhelix.com", format="audio/mp3", autoplay=True)
 
-st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
-# --- 5. TAMPILAN FOTO UTAMA DENGAN FRAME ELEGAN ---
-if os.path.exists("sahabat.jpg"):
-    st.markdown('<div class="photo-frame">', unsafe_allow_html=True)
-    st.image("sahabat.jpg", use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.caption("<p style='text-align: center; color: #aaa;'>Xena Ida Karunia • 20 Years of Awesomeness ✨</p>", unsafe_allow_html=True)
-else:
-    st.info("📸 Masukkan foto 'sahabat.jpg' ke dalam folder proyek Anda.")
+    # TAMPILAN FOTO XENA
+    if os.path.exists("sahabat.jpg"):
+        st.markdown('<div class="photo-frame">', unsafe_allow_html=True)
+        st.image("sahabat.jpg", use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.caption("<p style='text-align: center; color: #aaa;'>Xena Ida Karunia • 20 Years of Awesomeness ✨</p>", unsafe_allow_html=True)
 
-st.markdown("---")
+    st.markdown("---")
 
-# --- 6. VISUAL LILIN INTERAKTIF YANG LEBIH HIDUP ---
-st.markdown("<h4 style='text-align: center; color: #ffbe53;'>🎂 Tiup Lilin Ulang Tahun Virtualmu Di Sini</h4>", unsafe_allow_html=True)
+    # VISUAL LILIN INTERAKTIF
+    st.markdown("<h4 style='text-align: center; color: #ffbe53;'>🎂 Tiup Lilin Ulang Tahun Virtualmu Di Sini</h4>", unsafe_allow_html=True)
+    if 'lilin_aktif' not in st.session_state:
+        st.session_state.lilin_aktif = True
 
-if 'lilin_aktif' not in st.session_state:
-    st.session_state.lilin_aktif = True
+    if st.session_state.lilin_aktif:
+        st.markdown("<h1 style='text-align: center; font-size: 90px; margin: 0; text-shadow: 0 0 20px #ffbe53;'>🔥<br><span style='color: #eee;'>🕯️</span></h1>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-size: 14px; color: #ffbe53; font-style: italic;'>Make a wish, isi harapanmu di bawah, lalu klik tombol tiup! 👇</p>", unsafe_allow_html=True)
+    else:
+        st.markdown("<h1 style='text-align: center; font-size: 90px; margin: 0; opacity: 0.6;'>💨<br><span style='color: #888;'>🕯️</span></h1>", unsafe_allow_html=True)
+        st.success("🎉 Huffff... Lilin berhasil ditiup! Semoga seluruh mimpimu lekas dikabulkan oleh semesta, Xena! 🌟")
 
-if st.session_state.lilin_aktif:
-    # Lilin menyala dengan animasi glow teks sederhana
-    st.markdown("<h1 style='text-align: center; font-size: 90px; margin: 0; text-shadow: 0 0 20px #ffbe53;'>🔥<br><span style='color: #eee;'>🕯️</span></h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-size: 14px; color: #ffbe53; font-style: italic;'>Make a wish, isi harapanmu di bawah, lalu klik tombol tiup! 👇</p>", unsafe_allow_html=True)
-else:
-    # Lilin padam berganti asap tiupan
-    st.markdown("<h1 style='text-align: center; font-size: 90px; margin: 0; opacity: 0.6;'>💨<br><span style='color: #888;'>🕯️</span></h1>", unsafe_allow_html=True)
-    st.success("🎉 Huffff... Lilin berhasil ditiup! Semoga seluruh mimpimu lekas dikabulkan oleh semesta, Xena! 🌟")
+    st.markdown("---")
 
-st.markdown("---")
-
-# --- 7. KOTAK UCAPAN DENGAN DESAIN TEXT LUXURY ---
-st.markdown("### 💌 Surat Terbuka Untuk Xena:")
-
-# Menggunakan triple quotes standar Streamlit tanpa tag HTML yang rumit agar pasti rapi
-pesan_xena_fix = """
+    # KOTAK UCAPAN STANDARD MARKDOWN (100% AMAN & RAPI)
+    st.markdown("### 💌 Surat Terbuka Untuk Xena:")
+    
+    pesan_xena_fix = """
 **WOIIIII THIS UR DAY 😱🤩**  
 hehehehehehe agaaa maleman yaawww 😁🙏  
 happy 20th birthday xenaaaa, kepala 2 btw woilahh, bener bener di fase dewasa yang sesungguhnya 😱 🥳🥳🥳😼😱😱🤩🤩  
@@ -142,19 +103,17 @@ wes ga tau neh meh ngomong opo, selamat bergabung di circle 20th dimana kejadian
 
 **once again, happy 20th birthday xena ida karunia 🤩🤩🥳😼 u are an amazing person.**
 """
+    st.info(pesan_xena_fix)
 
-# Menampilkan teks di dalam kotak info gelap yang sangat rapi
-st.info(pesan_xena_fix)
+    # BAGIAN INTERAKTIF: WISH INPUT & BLOW BUTTON
+    wish_input = st.text_input("✨ Apa pencapaian terbesar yang ingin kamu raih tahun ini, Xen?", placeholder="Tulis satu impian terbesarmu di sini...")
 
-# --- 8. BAGIAN INTERAKTIF: WISH INPUT & BLOW BUTTON ---
-wish_input = st.text_input("✨ Apa pencapaian terbesar yang ingin kamu raih tahun ini, Xen?", placeholder="Tulis satu impian terbesarmu di sini...")
-
-if st.button("Tiup Lilin & Kunci Harapan 🎂"):
-    if wish_input:
-        st.session_state.lilin_aktif = False
-        st.balloons()
-        st.toast("Harapanmu sudah terbang ke langit! 🪐")
-        st.success(f"🔒 Selamat! Harapanmu: \"{wish_input}\" telah dikunci rapat. Semoga lekas terwujud nyata tahun ini! ✨")
-        st.rerun()
-    else:
-        st.warning("Tulis dulu harapanmu sebelum meniup lilin virtualnya, Xena!")
+    if st.button("Tiup Lilin & Kunci Harapan 🎂"):
+        if wish_input:
+            st.session_state.lilin_aktif = False
+            st.balloons()
+            st.toast("Harapanmu sudah terbang ke langit! 🪐")
+            st.success(f"🔒 Selamat! Harapanmu: \"{wish_input}\" telah dikunci rapat. Semoga lekas terwujud nyata tahun ini! ✨")
+            st.rerun()
+        else:
+            st.warning("Tulis dulu harapanmu sebelum meniup lilin virtualnya, Xena!")
