@@ -12,14 +12,28 @@ st.set_page_config(
 st.title("🎉 HAPPY BIRTHDAY XENA! 🎉")
 st.subheader("Welcome to 20s Club! ✨")
 
-# --- 3. FITUR MUSIK LATAR (.FEAST - NINA) ---
-if os.path.exists("nina.mp3"):
-    st.audio("nina.mp3", format="audio/mp3", autoplay=False)
-    st.caption("🎵 *Sedang memutar: .Feast - Nina (Klik play jika browser Anda memblokirnya)*")
-else:
-    st.caption("💡 *Tips: Masukkan file 'nina.mp3' ke folder proyek agar lagu bisa diputar.*")
-
+# --- FITUR MUSIK LATAR PREMIUM (NINA - .FEAST) ---
 st.markdown("---")
+st.markdown("#### 🎵 Musik Pengiring untuk Xena")
+
+# Opsi Utama: Membaca file lokal nina.mp3
+if os.path.exists("nina.mp3"):
+    try:
+        with open("nina.mp3", "rb") as audio_file:
+            audio_bytes = audio_file.read()
+        st.audio(audio_bytes, format="audio/mp3", autoplay=True)
+        st.caption("🔊 *Sedang memutar langsung dari file lokal: .Feast - Nina*")
+    except Exception as e:
+        # Jika file lokal error/rusak, otomatis alihkan ke link streaming cadangan yang stabil
+        audio_url_backup = "https://soundhelix.com"
+        st.audio(audio_url_backup, format="audio/mp3", autoplay=True)
+        st.caption("🎵 *Musik cadangan diputar otomatis karena file lokal sedang loading...*")
+else:
+    # Jika file nina.mp3 belum terbaca sama sekali
+    audio_url_backup = "https://soundhelix.com"
+    st.audio(audio_url_backup, format="audio/mp3", autoplay=True)
+    st.caption("💡 *Tips: Pastikan nama file musik sudah tepat 'nina.mp3' di folder VS Code Anda.*")
+
 
 # --- 4. TAMPILAN FOTO UTAMA XENA ---
 if os.path.exists("sahabat.jpg"):
