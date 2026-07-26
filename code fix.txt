@@ -1,0 +1,101 @@
+import streamlit as st
+
+# Konfigurasi halaman web premium
+st.set_page_config(
+    page_title="Happy 20th Birthday, Sahabat! 🎂", 
+    page_icon="🎉", 
+    layout="centered"
+)
+
+# --- CUSTOM CSS UNTUK TAMPILAN ELEGAN ---
+st.markdown("""
+    <style>
+    .main-title { 
+        font-size: 50px !important; 
+        font-weight: 800; 
+        background: linear-gradient(45deg, #FF4B4B, #FF8533);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center; 
+        margin-bottom: 10px;
+    }
+    .age-badge {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #FFFFFF;
+        background-color: #FF4B4B;
+        padding: 5px 15px;
+        border-radius: 20px;
+        width: fit-content;
+        margin: 0 auto 30px auto;
+    }
+    .premium-card { 
+        background-color: #FFFFFF; 
+        padding: 30px; 
+        border-radius: 15px; 
+        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+        border-top: 5px solid #FF4B4B;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# --- KONFIGURASI NAMA ---
+AGE = 20
+NAMA_SAHABAT = "Udin"  # <-- Ganti dengan nama sahabat Anda
+NAMA_ANDA = "Budi"     # <-- Ganti dengan nama Anda
+
+# Judul Utama & Badge Umur
+st.markdown('<p class="main-title">🎉 HAPPY BIRTHDAY! 🎉</p>', unsafe_allow_html=True)
+st.markdown(f'<div class="age-badge">Welcome to {AGE}s Club! ✨</div>', unsafe_allow_html=True)
+
+# 1. Efek Balon Selebrasi Otomatis saat Halaman Dibuka
+if 'celebrated' not in st.session_state:
+    st.balloons()
+    st.session_state.celebrated = True
+
+# 2. Fitur Musik Latar Otomatis
+audio_url = "https://soundhelix.com"
+st.audio(audio_url, format="audio/mp3", autoplay=True)
+st.caption("🎵 *Musik latar otomatis diputar (Klik tombol play jika browser Anda memblokirnya)*")
+
+st.success("🔓 KADO DIGITAL UTAMA BERHASIL DIBUKA!")
+
+# 3. TAMPILAN FOTO UTAMA SAHABAT
+# Simpan foto sahabat Anda di folder yang sama dengan nama 'sahabat.jpg'
+try:
+    st.image("sahabat.jpg", caption=f"Selamat Ulang Tahun yang ke-{AGE}, {NAMA_SAHABAT}! ✨", use_container_width=True)
+except:
+    st.info("📸 [Slot Foto Utama]: Simpan file foto sahabat Anda dengan nama 'sahabat.jpg' di folder proyek untuk memunculkan gambarnya di sini.")
+
+# 4. Kotak Ucapan Kustom
+st.markdown(f"""
+    <div class="premium-card">
+        <h3 style="color: #FF4B4B; margin-bottom: 20px;">Dear {NAMA_SAHABAT}, 🥂</h3>
+        
+        <p><b>Selamat ulang tahun yang ke-{AGE}!</b> Tanggal 26 Juli 2006 dulu adalah hari lahirnya salah satu orang paling penting di hidupku. Hari ini, kamu resmi menginjak usia kepala dua. Selamat datang di fase kedewasaan yang sesungguhnya!</p>
+        
+        <p>Aku mau bilang terima kasih banyak ya. Terima kasih sudah mau jadi sahabat yang solid, pendengar yang sabar waktu aku lagi banyak masalah, dan partner dalam segala hal konyol yang pernah kita lakuin bareng.</p>
+        
+        <p>Di usiamu yang ke-20 ini, doa terbaikku buat kamu: Semoga kamu selalu diberikan kesehatan, dilancarkan segala urusan kuliah/kerjanya, dan didekatkan dengan orang-orang baik. Aku harap semua impian besar yang sering kamu ceritain ke aku bisa terwujud satu per satu tahun ini!</p>
+        
+        <p>Tetap jadi orang baik, tetap jadi sahabatku yang gokil, dan jangan pernah menyerah sama keadaan ya. <i>Happy Birthday, Bro!</i> 🎂🎉</p>
+        
+        <p style="text-align: right; font-weight: bold; color: #FF4B4B; font-size: 18px; margin-top: 30px;">— Dari Sahabat Terbaikmu, {NAMA_ANDA} 😎</p>
+    </div>
+""", unsafe_allow_html=True)
+
+# 5. Fitur Make A Wish Box
+st.write("")
+st.subheader("🔮 Tulis Harapanmu di Usia 20 Tahun Ini")
+wish_input = st.text_input("Apa pencapaian terbesar yang ingin kamu raih tahun ini?", placeholder="Contoh: Luku kuliah tepat waktu / Sukses karir...")
+
+if st.button("Tiup Lilin & Kirim Harapan 🎂🚀"):
+    if wish_input:
+        st.toast("Harapanmu sudah tercatat di semesta! 💫")
+        st.balloons()
+        st.success(f"Selamat! Harapanmu: \"{wish_input}\" telah dikunci. Semoga segera terwujud nyata tahun ini! ✨")
+    else:
+        st.warning("Tulis dulu harapanmu sebelum meniup lilin virtual!")
